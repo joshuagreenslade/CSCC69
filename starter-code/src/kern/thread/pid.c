@@ -436,5 +436,5 @@ pid_join(pid_t targetpid, int *status, int flags)
 //when targetpid terminates its pidinfo must remain until another thread calls
 //	pid_join (calls this function) or detaches
 
-	return currpi->pi_pid;	//correct return value???
+	return targetpid;	//correct return value???
 }
