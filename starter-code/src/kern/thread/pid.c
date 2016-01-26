@@ -314,11 +314,45 @@ pid_unalloc(pid_t theirpid)
 int
 pid_detach(pid_t childpid)
 {
-	(void)childpid;
-	
-	// Implement me
-	KASSERT(false);
-	return EUNIMP;
+	struct pidinfo *pi;
+	struct pidinfo *currpi;
+
+	if((childpid == INVALID_PID) || (childpid == BOOTUP_PID))
+		return EINVAL;
+
+	lock_acquire(pidlock);
+
+	//get the info for the childpid and current pid
+	pi = pi_get(childpid);
+	currpi = pi_get(curthread->t_pid);
+
+	lock_release(pidlock);
+
+	//childpid was not found
+	if(pi == NULL)
+		return ESRCH;
+
+	//cildpid was already detached
+	if(pi->pi_ppid == INVALID_PID)
+		return EINVAL;
+
+	//caller is not the parent of childpid
+	if(currpi->pi_pid != pi->pi_ppid)
+		return EINVAL;
+
+	lock_acquire(pidlock);
+
+	//detach the childpid
+	pi->pi_ppid = INVALID_PID;
+
+	lock_release(pidlock);
+
+
+
+	//do you need to destroy the childpid if it has returned???
+
+
+	return 0;
 }
 
 /*
@@ -334,15 +368,27 @@ void
 pid_exit(int status, bool dodetach)
 {
 	struct pidinfo *my_pi;
-	
-	(void)dodetach; /* for compiler - delete when dodetach has real use */
 
+	(void)dodetach; /* for compiler - delete when dodetach has real use */
+										
+										
+//disown the children
+//if doetachis true, detach the children
+										
+										
 	// Implement me. Existing code simply sets the exit status.
 	lock_acquire(pidlock);
 
 	my_pi = pi_get(curthread->t_pid);
 	KASSERT(my_pi != NULL);
 	my_pi->pi_exitstatus = status;
+
+	my_pi->pi_exited = true;
+
+	//thread has been detached
+	if(my_pi->pi_ppid == INVALID_PID) {
+		pi_drop(my_pi->pi_pid);
+	}
 
 	lock_release(pidlock);
 }
@@ -356,11 +402,44 @@ pid_exit(int status, bool dodetach)
 int
 pid_join(pid_t targetpid, int *status, int flags)
 {
-	(void)targetpid;
-	(void)status;
-	(void)flags;
-	
-	// Implement me.
-	KASSERT(false);
-	return EUNIMP;
+	struct pidinfo *pi;
+	struct pidinfo *currpi = pi_get(curthread->t_pid);
+
+	if((targetpid == INVALID_PID) || (targetpid == BOOTUP_PID))
+		return EINVAL;
+
+	lock_acquire(pidlock);
+
+	//get the info for targetpid
+	pi = pi_get(targetpid);
+
+	lock_release(pidlock);
+
+	//trgetpid was not found
+	if(pi == NULL)
+		return ESRCH;
+
+	//targepid has been detached
+	if(pi->pi_ppid == INVALID_PID)
+		return EINVAL;
+
+	//targetpid is trying to join itself
+	if(pi->pi_pid == currpi->pi_pid)
+		return EDEADLK;
+
+	//if WNOHANG hasnt been sent wait
+	if(flags != WNOHANG) {
+
+		//wait until tagetpid returns
+		while(pi->pi_exited == false);
+
+		//put the exit status in status
+		if(status != NULL)
+			*status = pi->pi_exitstatus;
+	}
+
+//when targetpid terminates its pidinfo must remain until another thread calls
+//	pid_join (calls this function) or detaches
+
+	return currpi->pi_pid;	//correct return value???
 }

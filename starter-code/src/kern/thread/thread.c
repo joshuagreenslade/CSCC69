@@ -576,6 +576,9 @@ thread_fork(const char *name,
 	if (ret != NULL) {
 		*ret = newthread->t_pid;
 	}
+	else {
+		pid_detach(newthread->t_pid);
+	}
 
 	return 0;
 }
@@ -831,9 +834,15 @@ void
 thread_exit(int exitcode)
 {
 	struct thread *cur;
-        (void)exitcode;  // suppress warning until code gets written
 
 	cur = curthread;
+										
+										
+//figure out if the thread is auser_level process or not
+										
+										
+										
+	pid_exit(exitcode, 1);//1 if the exiting thread is a user_level process, 0 otherwise
 
 	/* VFS fields */
 	if (cur->t_cwd) {
