@@ -347,11 +347,6 @@ pid_detach(pid_t childpid)
 
 	lock_release(pidlock);
 
-
-
-	//do you need to destroy the childpid if it has returned???
-
-
 	return 0;
 }
 
