@@ -125,23 +125,20 @@ cmd_progthread(void *ptr, unsigned long nargs)
 {
 	char **args = ptr;
 	char progname[128];
-	char progname2[128];
 	int result;
 
 	KASSERT(nargs >= 1);
-
-	if (nargs > 2) {
-		kprintf("Warning: argument passing from menu not supported\n");
-	}
 
 	/* Hope we fit. */
 	KASSERT(strlen(args[0]) < sizeof(progname));
 
 	strcpy(progname, args[0]);
-	strcpy(progname2,args[0]); /* demke: make extra copy for runprogram */
+
+	//pass the argument array and number of arguments to runprogram
+	result = runprogram(args, (int)nargs);
+
 	free_args(nargs, args);
 
-	result = runprogram(progname2);
 	if (result) {
 		kprintf("Running program %s failed: %s\n", progname,
 			strerror(result));

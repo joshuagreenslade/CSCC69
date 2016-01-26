@@ -44,6 +44,7 @@
 #include <vfs.h>
 #include <syscall.h>
 #include <test.h>
+#include <copyinout.h>
 
 /*
  * Load program "progname" and start running it in usermode.
@@ -52,14 +53,19 @@
  * Calls vfs_open on progname and thus may destroy it.
  */
 int
-runprogram(char *progname)
+runprogram(char **args, int argc)
 {
 	struct vnode *v;
 	vaddr_t entrypoint, stackptr;
 	int result;
+//	int padding;
+	void *address;
+
+	//create an array for the addresses
+	void *addr[argc+1];
 
 	/* Open the file. */
-	result = vfs_open(progname, O_RDONLY, 0, &v);
+	result = vfs_open(args[0], O_RDONLY, 0, &v);
 	if (result) {
 		return result;
 	}
@@ -95,8 +101,47 @@ runprogram(char *progname)
 		return result;
 	}
 
+////////////////////////////////////////
+	address = &stackptr;
+
+int length;
+size_t *actual;
+	//go through the arrays backwards
+	for(int i=argc-1; i >= 0; i--) {
+
+		//pad the strings in the argv array so that it has a multiple of 4 bytes
+		length = strlen(args[i])+1;
+		while(length%4 != 0) {
+			strcat(args[i], "\0");
+			length++;
+		}
+
+		//add the beginning of the address that each string is located at to addr
+		address -= length;
+		addr[argc] = address;
+
+	}
+
+	//add a null value to addr[argc+1]
+	addr[argc+1] = NULL;
+
+	//copy each element of args to the stack in backwards order
+	for(int i=argc-1; i > 0; i--)
+		copyoutstr(args[i], (userptr_t) addr[i], (size_t)(addr[i] - addr[i-1]), actual);
+
+	//copy the first argument tothe stack
+	copyoutstr(args[0], (userptr_t) addr[0], (size_t)length, actual);
+
+	//add the addr array to the stack (backwards)
+	for(int i=argc; i >= 0; i--) {
+		address -= 4;//byte
+		copyout(addr[i], (userptr_t) address, (size_t)4);
+	}
+
+///////////////////////////////////////
+kprintf("\n%d\n", argc);
 	/* Warp to user mode. */
-	enter_new_process(0 /*argc*/, NULL /*userspace addr of argv*/,
+	enter_new_process(argc, NULL/*(userptr_t)address*/ /*userspace addr of argv*/,
 			  stackptr, entrypoint);
 	
 	/* enter_new_process does not return. */
