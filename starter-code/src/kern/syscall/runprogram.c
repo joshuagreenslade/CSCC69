@@ -59,10 +59,10 @@ runprogram(char **args, int argc)
 	vaddr_t entrypoint, stackptr;
 	int result;
 //	int padding;
-	void *address;
+//	void *address;
 
 	//create an array for the addresses
-	void *addr[argc+1];
+	userptr_t *addr[argc+1];
 
 	/* Open the file. */
 	result = vfs_open(args[0], O_RDONLY, 0, &v);
@@ -102,10 +102,12 @@ runprogram(char **args, int argc)
 	}
 
 ////////////////////////////////////////
-	address = &stackptr;
+//	address = &stackptr;
+
 
 int length;
-size_t *actual;
+//size_t *actual;
+size_t *sizes[argc];
 	//go through the arrays backwards
 	for(int i=argc-1; i >= 0; i--) {
 
@@ -115,10 +117,11 @@ size_t *actual;
 			strcat(args[i], "\0");
 			length++;
 		}
+		sizes[i] = (size_t*)length;	//error here
 
 		//add the beginning of the address that each string is located at to addr
-		address -= length;
-		addr[argc] = address;
+		/*address*/stackptr -= length;
+		addr[argc] = (userptr_t*) stackptr/*address*/;
 
 	}
 
@@ -126,22 +129,46 @@ size_t *actual;
 	addr[argc+1] = NULL;
 
 	//copy each element of args to the stack in backwards order
-	for(int i=argc-1; i > 0; i--)
-		copyoutstr(args[i], (userptr_t) addr[i], (size_t)(addr[i] - addr[i-1]), actual);
+	for(int i=argc-1; i >= 0; i--){
 
+
+
+//copyoutstr is getting bad memory reference
+//in os161 run
+//run p testbin/argtest abc
+//to test arguments
+
+
+		int result = copyoutstr(args[i], (userptr_t) &addr[i], (size_t)sizes[i], sizes[i]);//actual);
+
+kprintf("\n\n-%d-\n\n", result);
+kprintf("%d\n", (int)addr[i]);
+kprintf("%p\n\n", &addr[i]);
+}
 	//copy the first argument tothe stack
-	copyoutstr(args[0], (userptr_t) addr[0], (size_t)length, actual);
+//	result = copyoutstr(args[0], (userptr_t) &addr[0], (size_t)length, actual);
+
+
+//kprintf("\n\n-%d-\n\n", result);
+//kprintf("%d\n", (int)addr[0]);
+//kprintf("%p\n\n", &addr[0]);
+
 
 	//add the addr array to the stack (backwards)
 	for(int i=argc; i >= 0; i--) {
-		address -= 4;//byte
-		copyout(addr[i], (userptr_t) address, (size_t)4);
+		stackptr/*address*/ -= 4;//byte
+		result = copyout(addr[i], (userptr_t)&stackptr/*(userptr_t) address*/, (size_t)4);
+kprintf("\n\n-%d-\n\n", result);
+kprintf("%d\n", (int)addr[i]);
+kprintf("%p\n\n", &addr[i]);
+
+
 	}
 
 ///////////////////////////////////////
-kprintf("\n%d\n", argc);
+
 	/* Warp to user mode. */
-	enter_new_process(argc, NULL/*(userptr_t)address*/ /*userspace addr of argv*/,
+	enter_new_process(argc, (userptr_t)stackptr/*(userptr_t)address*/ /*userspace addr of argv*/,
 			  stackptr, entrypoint);
 	
 	/* enter_new_process does not return. */
