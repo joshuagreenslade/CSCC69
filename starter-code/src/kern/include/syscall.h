@@ -73,7 +73,8 @@ int sys_write(int fd, userptr_t buf, size_t size, int *retval);
 void dumb_consoleIO_bootstrap(void);
 
 int sys_getpid(void);
-int waitpid(pid_t pid, int *returncode, int flags);
+int sys_waitpid(pid_t pid, int *returncode, int flags);
+
 
 
 #endif /* _SYSCALL_H_ */
