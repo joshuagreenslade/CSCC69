@@ -318,7 +318,7 @@ pid_detach(pid_t childpid)
 	struct pidinfo *currpi;
 
 	if((childpid == INVALID_PID) || (childpid == BOOTUP_PID))
-		return EINVAL;
+		return -EINVAL;
 
 	lock_acquire(pidlock);
 
@@ -330,15 +330,15 @@ pid_detach(pid_t childpid)
 
 	//childpid was not found
 	if(pi == NULL)
-		return ESRCH;
+		return -ESRCH;
 
 	//cildpid was already detached
 	if(pi->pi_ppid == INVALID_PID)
-		return EINVAL;
+		return -EINVAL;
 
 	//caller is not the parent of childpid
 	if(currpi->pi_pid != pi->pi_ppid)
-		return EINVAL;
+		return -EINVAL;
 
 	lock_acquire(pidlock);
 
@@ -401,7 +401,7 @@ pid_join(pid_t targetpid, int *status, int flags)
 	struct pidinfo *currpi;
 
 	if((targetpid == INVALID_PID) || (targetpid == BOOTUP_PID))
-		return EINVAL;
+		return -EINVAL;
 
 	lock_acquire(pidlock);
 
@@ -413,15 +413,15 @@ pid_join(pid_t targetpid, int *status, int flags)
 
 	//trgetpid was not found
 	if(pi == NULL)
-		return ESRCH;
+		return -ESRCH;
 
 	//targepid has been detached
 	if(pi->pi_ppid == INVALID_PID)
-		return EINVAL;
+		return -EINVAL;
 
 	//targetpid is trying to join itself
 	if(pi->pi_pid == currpi->pi_pid)
-		return EDEADLK;
+		return -EDEADLK;
 
 	//if WNOHANG hasnt been sent wait
 	if(flags != WNOHANG) {
