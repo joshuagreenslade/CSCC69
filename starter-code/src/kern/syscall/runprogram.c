@@ -58,11 +58,7 @@ runprogram(char **args, int argc)
 	struct vnode *v;
 	vaddr_t entrypoint, stackptr;
 	int result;
-//	int padding;
-//	void *address;
 
-	//create an array for the addresses
-	userptr_t *addr[argc+1];
 
 	/* Open the file. */
 	result = vfs_open(args[0], O_RDONLY, 0, &v);
@@ -102,75 +98,53 @@ runprogram(char **args, int argc)
 	}
 
 ////////////////////////////////////////
-//	address = &stackptr;
+//our code starts here
+
+	size_t actual;
+	int size;
+	int totalsize = 0;
+
+	//allocate space for the addresses
+	userptr_t **addr = kmalloc(argc * sizeof(userptr_t *));
+	if(addr == NULL)
+		return ENOMEM;
 
 
-int length;
-//size_t *actual;
-size_t *sizes[argc];
-	//go through the arrays backwards
+	//go through the arguments in reverse
 	for(int i=argc-1; i >= 0; i--) {
 
-		//pad the strings in the argv array so that it has a multiple of 4 bytes
-		length = strlen(args[i])+1;
-		while(length%4 != 0) {
-			strcat(args[i], "\0");
-			length++;
-		}
-		sizes[i] = (size_t*)length;	//error here
+		size = strlen(args[i])+1;
+		totalsize += size;
 
-		//add the beginning of the address that each string is located at to addr
-		/*address*/stackptr -= length;
-		addr[argc] = (userptr_t*) stackptr/*address*/;
-
+		//add args[i] to the stack and save its address
+		stackptr -= size;
+		addr[i] = (userptr_t*)stackptr;
+		copyoutstr(args[i], (userptr_t) addr[i], size, &actual);
 	}
 
-	//add a null value to addr[argc+1]
-	addr[argc+1] = NULL;
+	//add a null value to addr[argc]
+	addr[argc] = NULL;
 
-	//copy each element of args to the stack in backwards order
-	for(int i=argc-1; i >= 0; i--){
-
-
-
-//copyoutstr is getting bad memory reference
-//in os161 run
-//run p testbin/argtest abc
-//to test arguments
-
-
-		int result = copyoutstr(args[i], (userptr_t) &addr[i], (size_t)sizes[i], sizes[i]);//actual);
-
-kprintf("\n\n-%d-\n\n", result);
-kprintf("%d\n", (int)addr[i]);
-kprintf("%p\n\n", &addr[i]);
-}
-	//copy the first argument tothe stack
-//	result = copyoutstr(args[0], (userptr_t) &addr[0], (size_t)length, actual);
-
-
-//kprintf("\n\n-%d-\n\n", result);
-//kprintf("%d\n", (int)addr[0]);
-//kprintf("%p\n\n", &addr[0]);
-
+	//make sure the stack is 4 byte aligned
+	while((totalsize % 4) != 0){
+		stackptr--;
+		totalsize++;
+	}
 
 	//add the addr array to the stack (backwards)
 	for(int i=argc; i >= 0; i--) {
-		stackptr/*address*/ -= 4;//byte
-		result = copyout(addr[i], (userptr_t)&stackptr/*(userptr_t) address*/, (size_t)4);
-kprintf("\n\n-%d-\n\n", result);
-kprintf("%d\n", (int)addr[i]);
-kprintf("%p\n\n", &addr[i]);
-
-
+		stackptr -= 4;
+		copyout(&addr[i], (userptr_t)stackptr, 4);
 	}
 
-///////////////////////////////////////
+	//free the args and addr
+	kfree(addr);
+	kfree(args);
 
 	/* Warp to user mode. */
-	enter_new_process(argc, (userptr_t)stackptr/*(userptr_t)address*/ /*userspace addr of argv*/,
+	enter_new_process(argc-1, (userptr_t)stackptr /*userspace addr of argv*/,
 			  stackptr, entrypoint);
-	
+
 	/* enter_new_process does not return. */
 	panic("enter_new_process returned\n");
 	return EINVAL;
