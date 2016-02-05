@@ -142,7 +142,7 @@ runprogram(char **args, int argc)
 	kfree(args);
 
 	/* Warp to user mode. */
-	enter_new_process(argc-1, (userptr_t)stackptr /*userspace addr of argv*/,
+	enter_new_process(argc, (userptr_t)stackptr /*userspace addr of argv*/,
 			  stackptr, entrypoint);
 
 	/* enter_new_process does not return. */
