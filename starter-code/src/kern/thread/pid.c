@@ -400,6 +400,8 @@ pid_exit(int status, bool dodetach)
 	//thread has been detached
 	if(my_pi->pi_ppid == INVALID_PID)
 		pi_drop(my_pi->pi_pid);
+	else
+		cv_broadcast(my_pi->pi_cv, pidlock);
 
 	lock_release(pidlock);
 }
@@ -442,12 +444,18 @@ pid_join(pid_t targetpid, int *status, int flags)
 	//if WNOHANG hasnt been sent wait
 	if(flags != WNOHANG) {
 
+		lock_acquire(pidlock);
+
 		//wait until tagetpid returns
-		while(pi->pi_exited == false);
+		if(!pi->pi_exited)
+			cv_wait(pi->pi_cv, pidlock);
+
 
 		//put the exit status in status
 		if(status != NULL)
 			*status = pi->pi_exitstatus;
+
+		lock_release(pidlock);
 	}
 
 	return targetpid;
