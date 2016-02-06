@@ -196,7 +196,7 @@ common_prog(int nargs, char **args)
 	}
 
 	if(result > 0)
-		sys_waitpid(result, NULL, NULL);
+		sys_waitpid(result, NULL, 0);
 
 	return 0;
 }
