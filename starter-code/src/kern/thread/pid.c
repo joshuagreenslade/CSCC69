@@ -332,7 +332,7 @@ pid_detach(pid_t childpid)
 	if(pi == NULL)
 		return -ESRCH;
 
-	//cildpid was already detached
+	//childpid was already detached
 	if(pi->pi_ppid == INVALID_PID)
 		return -EINVAL;
 
@@ -344,6 +344,10 @@ pid_detach(pid_t childpid)
 
 	//detach the childpid
 	pi->pi_ppid = INVALID_PID;
+
+	//if the pid has already exited remove it
+	if(pi->pi_exited == true)
+		pi_drop(pi->pi_pid);
 
 	lock_release(pidlock);
 
@@ -363,27 +367,39 @@ void
 pid_exit(int status, bool dodetach)
 {
 	struct pidinfo *my_pi;
+	struct pidinfo *child;
 
-	(void)dodetach; /* for compiler - delete when dodetach has real use */
-										
-										
-//disown the children
-//if doetachis true, detach the children
-										
-										
-	// Implement me. Existing code simply sets the exit status.
 	lock_acquire(pidlock);
-
 	my_pi = pi_get(curthread->t_pid);
 	KASSERT(my_pi != NULL);
-	my_pi->pi_exitstatus = status;
 
+	//loop through all pid's to find the children of my_pi
+	for(pid_t pid = PID_MIN; pid <= PID_MAX; pid++){
+
+		//get the next pidinfo
+		child = pi_get(pid);
+
+		//if the next pid is a child of the current pid, disown it
+		if((child != NULL) && (child->pi_ppid == my_pi->pi_pid)){
+			child->pi_ppid = INVALID_PID;
+
+			if(dodetach){
+
+				//must release the lock before calling detach
+				lock_release(pidlock);
+				pid_detach(child->pi_pid);
+				lock_acquire(pidlock);
+			}
+		}
+	}
+
+	// Implement me. Existing code simply sets the exit status.
+	my_pi->pi_exitstatus = status;
 	my_pi->pi_exited = true;
 
 	//thread has been detached
-	if(my_pi->pi_ppid == INVALID_PID) {
+	if(my_pi->pi_ppid == INVALID_PID)
 		pi_drop(my_pi->pi_pid);
-	}
 
 	lock_release(pidlock);
 }
@@ -434,8 +450,5 @@ pid_join(pid_t targetpid, int *status, int flags)
 			*status = pi->pi_exitstatus;
 	}
 
-//when targetpid terminates its pidinfo must remain until another thread calls
-//	pid_join (calls this function) or detaches
-
-	return targetpid;	//correct return value???
+	return targetpid;
 }

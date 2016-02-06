@@ -157,6 +157,7 @@ thread_create(const char *name)
 	thread->t_cwd = NULL;
 
 	/* If you add to struct thread, be sure to initialize here */
+	thread->iskern = false;
 
 	return thread;
 }
@@ -821,6 +822,12 @@ thread_startup(void (*entrypoint)(void *data1, unsigned long data2),
 	thread_exit(_MKWAIT_EXIT(EX_OK));
 }
 
+void
+set_iskern(bool iskern)
+{
+	curthread->iskern = iskern;
+}
+
 /*
  * Cause the current thread to exit.
  *
@@ -836,13 +843,8 @@ thread_exit(int exitcode)
 	struct thread *cur;
 
 	cur = curthread;
-										
-										
-//figure out if the thread is auser_level process or not
-										
-										
-										
-	pid_exit(exitcode, 1);//1 if the exiting thread is a user_level process, 0 otherwise
+
+	pid_exit(exitcode, cur->iskern);
 
 	/* VFS fields */
 	if (cur->t_cwd) {

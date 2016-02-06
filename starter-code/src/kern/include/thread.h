@@ -115,6 +115,8 @@ struct thread {
 	struct vnode *t_cwd;		/* current working directory */
 
 	/* add more here as needed */
+
+	bool iskern;
 };
 
 /* Call once during system startup to allocate data structures. */
@@ -167,6 +169,8 @@ void schedule(void);
  * timer interrupt.
  */
 void thread_consider_migration(void);
+
+void set_iskern(bool);
 
 
 #endif /* _THREAD_H_ */
