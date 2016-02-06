@@ -51,7 +51,7 @@ sys_fork(struct trapframe *tf, pid_t *retval)
  * sys_getpid
  * Placeholder to remind you to implement this.
  */
-int
+pid_t
 sys_getpid(void)
 {
 	return curthread->t_pid;
@@ -71,6 +71,8 @@ sys_waitpid(pid_t pid, int *returncode, int flags)
 	//pid was not being watched by the current process or wasnt the parent
 //	if()
 //		return ECHILD;
+
+
 
 	return pid_join(pid, returncode, flags);
 }

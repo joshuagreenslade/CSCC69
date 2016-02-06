@@ -72,7 +72,7 @@ int sys_write(int fd, userptr_t buf, size_t size, int *retval);
  */
 void dumb_consoleIO_bootstrap(void);
 
-int sys_getpid(void);
+pid_t sys_getpid(void);
 int sys_waitpid(pid_t pid, int *returncode, int flags);
 
 

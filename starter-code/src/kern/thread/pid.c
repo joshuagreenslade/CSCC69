@@ -450,7 +450,6 @@ pid_join(pid_t targetpid, int *status, int flags)
 		if(!pi->pi_exited)
 			cv_wait(pi->pi_cv, pidlock);
 
-
 		//put the exit status in status
 		if(status != NULL)
 			*status = pi->pi_exitstatus;
