@@ -373,17 +373,16 @@ pid_exit(int status, bool dodetach)
 	my_pi = pi_get(curthread->t_pid);
 	KASSERT(my_pi != NULL);
 
-	//loop through all pid's to find the children of my_pi
-	for(pid_t pid = PID_MIN; pid <= PID_MAX; pid++){
+	if(dodetach){
 
-		//get the next pidinfo
-		child = pi_get(pid);
+		//loop through all pid's to find the children of my_pi
+		for(pid_t pid = PID_MIN; pid <= PID_MAX; pid++){
 
-		//if the next pid is a child of the current pid, disown it
-		if((child != NULL) && (child->pi_ppid == my_pi->pi_pid)){
-			child->pi_ppid = INVALID_PID;
+			//get the next pidinfo
+			child = pi_get(pid);
 
-			if(dodetach){
+			//if the next pid is a child of the current pid, disown it
+			if((child != NULL) && (child->pi_ppid == my_pi->pi_pid)){
 
 				//must release the lock before calling detach
 				lock_release(pidlock);
