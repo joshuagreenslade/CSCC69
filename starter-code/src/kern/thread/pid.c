@@ -458,3 +458,39 @@ pid_join(pid_t targetpid, int *status, int flags)
 
 	return targetpid;
 }
+
+int
+pid_kill(pid_t pid, int sig) {
+	struct pidinfo *target;
+
+	lock_acquire(pidlock);
+	target = pi_get(pid);
+	
+	if (target == NULL) {
+		lock_release(pidlock);
+		return ESRCH;
+	}
+	if (sig == 0){
+		lock_release(pidlock);
+		return 0;
+	}
+	if (sig > 32 || sig < 1) {
+		lock_release(pidlock);
+	}
+	if (sig == SIGCONT){
+		DEBUG(DB_THREADS, "\npid_kill: delivering SIGCONT to pid %d.\n", curthread->t_pid);
+		pi_unset_signal(pid, SIGSTOP);
+		cv_signal(sleepers, sleeplock);
+	}
+	else if (sig == SIGKILL || sig == SIGSTOP || sig == SIGINT || sig == SIGQUIT || sig == SIGWINCH || sig == SIGINFO){
+		DEBUG(DB_THREADS, "\npid_kill: pid=%d, signal=%d\n", pid, sig);
+		target->pi_signal |= 1 << sig;
+	}
+	else {
+		lock_release(pidlock);
+		return EUNIMP;
+	}
+	
+	lock_release(pid_lock);
+	return 0;
+}	
