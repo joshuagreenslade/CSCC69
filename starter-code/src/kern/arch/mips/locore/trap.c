@@ -139,6 +139,8 @@ mips_trap(struct trapframe *tf)
 	isutlb = (tf->tf_cause & CCA_UTLB) != 0;
 	iskern = (tf->tf_status & CST_KUp) == 0;
 
+	set_iskern(iskern);
+
 	KASSERT(code < NTRAPCODES);
 
 	/* Make sure we haven't run off our stack */
