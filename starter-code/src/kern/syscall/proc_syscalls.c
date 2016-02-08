@@ -82,5 +82,6 @@ sys_waitpid(pid_t pid, int *returncode, int flags)
  * sys_kill
  * Placeholder comment to remind you to implement this.
  */
-
-
+int sys_kill(pid_t pid, int signum, int* retval) {
+	return pid_kill(pid, signum);
+}
