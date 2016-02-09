@@ -452,13 +452,27 @@ pid_join(pid_t targetpid, int *status, int flags)
 			cv_wait(pi->pi_cv, pidlock);
 
 		//put the exit status in status
-		if(status != NULL)
+		if(status != NULL) pid_get_signa
 			*status = pi->pi_exitstatus;
 
 		lock_release(pidlock);
 	}
 
 	return targetpid;
+}
+
+void manage_signal(pid_t pid){
+
+	struct pidinfo *pi;
+	lock_acquire(pidlock);
+	pi = pi_get(pid);
+
+	if(pi->pi_signal > 0){
+		lock_release(pidlock)
+		thread_exit(pi->pi_signal);
+	}
+
+	lock_release(pidlock);
 }
 
 static void
