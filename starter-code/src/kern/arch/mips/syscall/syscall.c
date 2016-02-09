@@ -137,6 +137,7 @@ syscall(struct trapframe *tf)
             /* ASST1 - You need to fill in the code for each of these cases */
             case SYS_getpid:
 		retval = sys_getpid();
+		err = 0;
 		break;
 
             case SYS_waitpid:
@@ -146,7 +147,8 @@ syscall(struct trapframe *tf)
 		break;
 
             case SYS_kill:
-            	err = sys_kill (tf->tf_a0, tf->tf_a1);
+            	retval = sys_kill (tf->tf_a0, tf->tf_a1);
+            	err = 0;
             	break;
 
 

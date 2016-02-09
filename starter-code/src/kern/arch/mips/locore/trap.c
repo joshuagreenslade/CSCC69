@@ -39,6 +39,7 @@
 #include <vm.h>
 #include <mainbus.h>
 #include <syscall.h>
+#include <pid.h>
 
 
 /* in exception.S */
@@ -331,6 +332,10 @@ mips_trap(struct trapframe *tf)
 	 */
 	if (curthread->t_stack == NULL) {
 		return;
+	}
+
+	if(!iskern){
+		manage_signal(curthread->t_pid);
 	}
 
 	cputhreads[curcpu->c_number] = (vaddr_t)curthread;
