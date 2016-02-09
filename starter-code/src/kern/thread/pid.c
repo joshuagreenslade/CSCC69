@@ -487,13 +487,14 @@ pid_kill(pid_t pid, int sig) {
 	}
 	if (sig > 32 || sig < 1) {
 		lock_release(pidlock);
+		return EINVAL;
 	}
 	if (sig == SIGCONT){
 		DEBUG(DB_THREADS, "\npid_kill: delivering SIGCONT to pid %d.\n", curthread->t_pid);
 		pi_unset_signal(pid, SIGSTOP);
 		cv_signal(sleepers, sleeplock);
 	}
-	else if (sig == SIGKILL || sig == SIGSTOP || sig == SIGINT || sig == SIGQUIT || sig == SIGWINCH || sig == SIGINFO){
+	else if (sig == SIGHUP || sig == SIGKILL || sig == SIGSTOP || sig == SIGINT || sig == SIGQUIT || sig == SIGWINCH || sig == SIGINFO || sig == SIGTERM){
 		DEBUG(DB_THREADS, "\npid_kill: pid=%d, signal=%d\n", pid, sig);
 		target->pi_signal |= 1 << sig;
 	}
