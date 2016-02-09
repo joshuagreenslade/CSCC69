@@ -508,7 +508,7 @@ pid_kill(pid_t pid, int sig) {
 	if (sig == SIGCONT){
 		DEBUG(DB_THREADS, "\npid_kill: delivering SIGCONT to pid %d.\n", curthread->t_pid);
 		pi_unset_signal(pid, SIGSTOP);
-		cv_signal(sleepers, sleeplock);
+		//cv_signal(sleepers, sleeplock);
 	}
 	else if (sig == SIGSTOP || sig == SIGWINCH || sig == SIGHUP || sig == SIGKILL || sig == SIGINT || sig == SIGQUIT || sig == SIGINFO || sig == SIGTERM){
 		DEBUG(DB_THREADS, "\npid_kill: pid=%d, signal=%d\n", pid, sig);
