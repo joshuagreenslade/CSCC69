@@ -119,6 +119,9 @@ struct thread {
 	bool iskern;
 };
 
+struct lock *sleeplock;
+struct cv *sleepers;
+
 /* Call once during system startup to allocate data structures. */
 void thread_bootstrap(void);
 

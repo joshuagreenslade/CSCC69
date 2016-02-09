@@ -42,6 +42,7 @@
 #include <current.h>
 #include <synch.h>
 #include <pid.h>
+#include <signal.h>
 
 /*
  * Structure for holding PID and return data for a thread.
@@ -56,6 +57,7 @@ struct pidinfo {
 	volatile bool pi_exited;	// true if thread has exited
 	int pi_exitstatus;		// status (only valid if exited)
 	struct cv *pi_cv;		// use to wait for thread exit
+	int pi_signal;
 };
 
 
@@ -459,6 +461,15 @@ pid_join(pid_t targetpid, int *status, int flags)
 	return targetpid;
 }
 
+static void
+pi_unset_signal(pid_t pid, int sig){
+	struct pidinfo *target;
+	KASSERT(lock_do_i_hold(pidlock));
+	target = pi_get(pid);
+	KASSERT(target != NULL);
+	target->pi_signal &= ~(1 << sig);
+}
+
 int
 pid_kill(pid_t pid, int sig) {
 	struct pidinfo *target;
@@ -491,7 +502,7 @@ pid_kill(pid_t pid, int sig) {
 		return EUNIMP;
 	}
 	
-	lock_release(pid_lock);
+	lock_release(pidlock);
 	return 0;
 }	
 

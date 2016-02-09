@@ -38,6 +38,7 @@
 #define INVALID_PID	0	/* nothing has this pid */
 #define BOOTUP_PID	1	/* first thread has this pid */
 
+
 /*
  * Initialize pid management.
  */
@@ -72,6 +73,8 @@ int pid_join(pid_t targetpid, int *status, int flags);
 
 
 int pid_wait(pid_t targetpid, int *status, int flags);
+
+int pid_kill(pid_t pid, int sig);
 
 
 #endif /* _PID_H_ */
