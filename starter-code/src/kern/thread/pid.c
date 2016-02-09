@@ -447,12 +447,10 @@ pid_join(pid_t targetpid, int *status, int flags)
 		lock_release(pidlock);
 		return -EDEADLK;
 	}
-
 	//wait until tagetpid returns
 	if(!pi->pi_exited){
 		if(flags == WNOHANG)
 			return 0;
-
 		cv_wait(pi->pi_cv, pidlock);
 	}
 
@@ -472,7 +470,7 @@ void manage_signal(pid_t pid){
 	pi = pi_get(pid);
 
 	if(pi->pi_signal > 0){
-		lock_release(pidlock)
+		lock_release(pidlock);
 		thread_exit(pi->pi_signal);
 	}
 
@@ -512,10 +510,16 @@ pid_kill(pid_t pid, int sig) {
 		pi_unset_signal(pid, SIGSTOP);
 		cv_signal(sleepers, sleeplock);
 	}
-	else if (sig == SIGHUP || sig == SIGKILL || sig == SIGSTOP || sig == SIGINT || sig == SIGQUIT || sig == SIGWINCH || sig == SIGINFO || sig == SIGTERM){
+	else if (sig == SIGSTOP || sig == SIGWINCH || sig == SIGHUP || sig == SIGKILL || sig == SIGINT || sig == SIGQUIT || sig == SIGINFO || sig == SIGTERM){
 		DEBUG(DB_THREADS, "\npid_kill: pid=%d, signal=%d\n", pid, sig);
-		target->pi_signal |= 1 << sig;
+		target->pi_signal = 1; 
 	}
+	/*else if (sig == SIGSTOP){
+		DEBUG(DB_THREADS, "\npid_kill: pid=%d, signal=%d\n", pid, sig);
+		target->pi_signal = 1;
+		cv_wait(sleepers, sleeplock);
+		//lock_release(pidlock);
+	}*/
 	else {
 		lock_release(pidlock);
 		return EUNIMP;

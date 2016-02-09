@@ -76,5 +76,7 @@ int pid_wait(pid_t targetpid, int *status, int flags);
 
 int pid_kill(pid_t pid, int sig);
 
+void manage_signal(pid_t pid);
+
 
 #endif /* _PID_H_ */
