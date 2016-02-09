@@ -74,6 +74,7 @@ void dumb_consoleIO_bootstrap(void);
 
 pid_t sys_getpid(void);
 int sys_waitpid(pid_t pid, int *returncode, int flags);
+int sys_kill(pid_t pid, int signum);
 
 
 
