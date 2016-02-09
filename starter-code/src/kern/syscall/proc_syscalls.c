@@ -65,16 +65,7 @@ sys_getpid(void)
 int
 sys_waitpid(pid_t pid, int *returncode, int flags)
 {
-	if(flags != 0)
-		return EINVAL;
-
-	//pid was not being watched by the current process or wasnt the parent
-//	if()
-//		return ECHILD;
-
-
-
-	return pid_join(pid, returncode, flags);
+	return pid_wait(pid, returncode, flags);
 }
 
 
@@ -83,5 +74,6 @@ sys_waitpid(pid_t pid, int *returncode, int flags)
  * Placeholder comment to remind you to implement this.
  */
 int sys_kill(pid_t pid, int signum, int* retval) {
-	return pid_kill(pid, signum);
+	return  pid_kill(pid, signum);
 }
+

@@ -494,3 +494,25 @@ pid_kill(pid_t pid, int sig) {
 	lock_release(pid_lock);
 	return 0;
 }	
+
+
+int pid_wait(pid_t targetpid, int *status, int flags) {
+
+	struct pidinfo *targetpi;
+
+	if((flags != 0) && (flags != WNOHANG))
+		return -EINVAL;
+
+	lock_acquire(pidlock);
+	targetpi = pi_get(targetpid);
+
+	//caller wasnt the parent
+	if(targetpi->pi_ppid != curthread->t_pid){
+		lock_release(pidlock);
+		return -ECHILD;
+	}
+
+	lock_release(pidlock);
+
+	return pid_join(targetpid, status, flags);
+}
