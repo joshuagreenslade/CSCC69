@@ -328,21 +328,23 @@ pid_detach(pid_t childpid)
 	pi = pi_get(childpid);
 	currpi = pi_get(curthread->t_pid);
 
-	lock_release(pidlock);
-
 	//childpid was not found
-	if(pi == NULL)
+	if(pi == NULL){
+		lock_release(pidlock);
 		return -ESRCH;
+	}
 
 	//childpid was already detached
-	if(pi->pi_ppid == INVALID_PID)
+	if(pi->pi_ppid == INVALID_PID){
+		lock_release(pidlock);
 		return -EINVAL;
+	}
 
 	//caller is not the parent of childpid
-	if(currpi->pi_pid != pi->pi_ppid)
+	if(currpi->pi_pid != pi->pi_ppid){
+		lock_release(pidlock);
 		return -EINVAL;
-
-	lock_acquire(pidlock);
+	}
 
 	//detach the childpid
 	pi->pi_ppid = INVALID_PID;
@@ -428,35 +430,37 @@ pid_join(pid_t targetpid, int *status, int flags)
 	pi = pi_get(targetpid);
 	currpi = pi_get(curthread->t_pid);
 
-	lock_release(pidlock);
-
 	//trgetpid was not found
-	if(pi == NULL)
+	if(pi == NULL){
+		lock_release(pidlock);
 		return -ESRCH;
+	}
 
 	//targepid has been detached
-	if(pi->pi_ppid == INVALID_PID)
+	if(pi->pi_ppid == INVALID_PID){
+		lock_release(pidlock);
 		return -EINVAL;
+	}
 
 	//targetpid is trying to join itself
-	if(pi->pi_pid == currpi->pi_pid)
-		return -EDEADLK;
-
-	//if WNOHANG hasnt been sent wait
-	if(flags != WNOHANG) {
-
-		lock_acquire(pidlock);
-
-		//wait until tagetpid returns
-		if(!pi->pi_exited)
-			cv_wait(pi->pi_cv, pidlock);
-
-		//put the exit status in status
-		if(status != NULL)
-			*status = pi->pi_exitstatus;
-
+	if(pi->pi_pid == currpi->pi_pid){
 		lock_release(pidlock);
+		return -EDEADLK;
 	}
+
+	//wait until tagetpid returns
+	if(!pi->pi_exited){
+		if(flags == WNOHANG)
+			return 0;
+
+		cv_wait(pi->pi_cv, pidlock);
+	}
+
+	//put the exit status in status
+	if(status != NULL)
+		*status = pi->pi_exitstatus;
+
+	lock_release(pidlock);
 
 	return targetpid;
 }
