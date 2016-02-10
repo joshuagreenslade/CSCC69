@@ -447,18 +447,22 @@ pid_join(pid_t targetpid, int *status, int flags)
 		lock_release(pidlock);
 		return -EDEADLK;
 	}
-	//wait until tagetpid returns
-	if(!pi->pi_exited){
-		if(flags == WNOHANG)
-			return 0;
-		cv_wait(pi->pi_cv, pidlock);
+
+	if(flags != WNOHANG){
+
+		//wait until tagetpid returns
+		if(!pi->pi_exited)
+			cv_wait(pi->pi_cv, pidlock);
+
+		//put the exit status in status
+		if(status != NULL)
+			*status = pi->pi_exitstatus;
 	}
 
-	//put the exit status in status
-	if(status != NULL)
-		*status = pi->pi_exitstatus;
-
 	lock_release(pidlock);
+
+	if(flags == WNOHANG)
+		return 0;
 
 	return targetpid;
 }
@@ -473,6 +477,7 @@ void manage_signal(pid_t pid){
 		lock_release(pidlock);
 		thread_exit(pi->pi_signal);
 	}
+
 
 	lock_release(pidlock);
 }
@@ -516,7 +521,7 @@ pid_kill(pid_t pid, int sig) {
 	}
 	/*else if (sig == SIGSTOP){
 		DEBUG(DB_THREADS, "\npid_kill: pid=%d, signal=%d\n", pid, sig);
-		target->pi_signal = 1;
+		target->pi_signal = 2;
 		cv_wait(sleepers, sleeplock);
 		//lock_release(pidlock);
 	}*/
