@@ -1,0 +1,233 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include
+END
+clock.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/clock.h
+END
+uio.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/uio.h
+END
+mainbus.h
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/mainbus.h
+END
+endian.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/endian.h
+END
+limits.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/limits.h
+END
+threadlist.h
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/threadlist.h
+END
+types.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/types.h
+END
+elf.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/elf.h
+END
+syscall.h
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/syscall.h
+END
+stat.h
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/stat.h
+END
+vmprivate.h
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/vmprivate.h
+END
+array.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/array.h
+END
+emufs.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/emufs.h
+END
+spinlock.h
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/spinlock.h
+END
+cdefs.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/cdefs.h
+END
+thread.h.safe
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/thread.h.safe
+END
+addrspace.h
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/addrspace.h
+END
+cpu.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/cpu.h
+END
+copyinout.h
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/copyinout.h
+END
+spl.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/spl.h
+END
+vfs.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/vfs.h
+END
+device.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/device.h
+END
+wchan.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/wchan.h
+END
+threadprivate.h
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/threadprivate.h
+END
+setjmp.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/setjmp.h
+END
+lib.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/lib.h
+END
+thread.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/thread.h
+END
+fs.h
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/fs.h
+END
+vnode.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/vnode.h
+END
+pid.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/pid.h
+END
+bitmap.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/bitmap.h
+END
+signal.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/signal.h
+END
+test.h
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/test.h
+END
+current.h
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/current.h
+END
+vm.h
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/vm.h
+END
+synch.h
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/synch.h
+END
+stdarg.h
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/stdarg.h
+END
+version.h
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/include/version.h
+END

@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/arch/mips/thread
+END
+switch.S
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/arch/mips/thread/switch.S
+END
+switchframe.h
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/arch/mips/thread/switchframe.h
+END
+threadstart.S
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/arch/mips/thread/threadstart.S
+END
+cpu.c
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/arch/mips/thread/cpu.c
+END
+thread_machdep.c
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/arch/mips/thread/thread_machdep.c
+END
+switchframe.c
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/arch/mips/thread/switchframe.c
+END
