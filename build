@@ -1,0 +1,32 @@
+cd a2
+./configure --ostree=`pwd`/../root
+
+cd kern/conf
+
+if [ "$1" == rand ]
+then
+	./config ASST2-RAND
+	cd ../compile/ASST2-RAND
+
+else
+	./config ASST2-NORAND
+	cd ../compile/ASST2-NORAND
+fi
+
+bmake depend
+bmake &> ../../../../error
+
+bmake install
+
+cd ../../..
+bmake
+bmake install
+
+cd ..
+
+cat ./error
+
+cp a2/sys161.conf root
+
+cd root
+sys161 kernel
