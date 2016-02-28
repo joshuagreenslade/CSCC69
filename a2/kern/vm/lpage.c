@@ -422,11 +422,27 @@ lpage_zerofill(struct lpage **lpret)
 int
 lpage_fault(struct lpage *lp, struct addrspace *as, int faulttype, vaddr_t va)
 {
-	(void)lp;	// suppress compiler warning until code gets written
-	(void)as;	// suppress compiler warning until code gets written
-	(void)faulttype;// suppress compiler warning until code gets written
-	(void)va;	// suppress compiler warning until code gets written
-	return EUNIMP;	// suppress compiler warning until code gets written
+	lpage_lock_and_pin(lp);
+
+	//if the page is not in the memory its in the swapspace
+	if(lp->lp_paddr == INVALID_PADDR) {
+		lpage_unlock(lp);
+
+		//allocate space in ram
+		lp->lp_paddr = coremap_allocuser(lp);
+
+		//load the page into ram
+		lock_acquire(global_paging_lock);
+		swap_pagein(lp->lp_paddr, lp->lp_swapaddr);
+		lpage_lock(lp);
+		lock_release(global_paging_lock);
+	}
+
+	//update the tlb
+	mmu_map(as, va, lp->lp_paddr, faulttype);
+	lpage_unlock(lp);
+
+	return 0;
 }
 
 /*
