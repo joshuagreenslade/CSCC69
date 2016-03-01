@@ -459,5 +459,42 @@ lpage_fault(struct lpage *lp, struct addrspace *as, int faulttype, vaddr_t va)
 void
 lpage_evict(struct lpage *lp)
 {
-	(void)lp;	// suppress compiler warning until code gets written
+	KASSERT(lp != NULL);
+	lpage_lock(lp);
+
+	KASSERT(lp->lp_paddr != INVALID_PADDR);
+	KASSERT(lp->lp_swapaddr != INVALID_SWAPADDR);
+
+	/* If page is dirty, then swap page out */
+	if (LP_ISDIRTY(lp))
+	{
+		lpage_unlock(lp); // Release lock before doing I/O
+
+		KASSERT(lock_do_i_hold(global_paging_lock));
+		KASSERT(coremap_pageispinned(lp->lp_paddr));
+
+		swap_pageout((lp->lp_paddr & PAGE_FRAME), lp->lp_swapaddr);
+		lpage_lock(lp);
+		KASSERT((lp->lp_paddr & PAGE_FRAME) != INVALID_PADDR);
+
+		/* UPDATE STATUS */
+		spinlock_acquire(&stats_spinlock);
+		ct_write_evictions++;
+		DEBUG (DB_VM, "lpage_evict: evicting dirty page 0x%x\n", (lp->lp_paddr & PAGE_FRAME));
+		spinlock_release(&stats_spinlock);
+
+	}
+	/* If page is clean, then update stats */
+	else
+	{
+		spinlock_acquire(&stats_spinlock);
+		ct_discard_evictions++;
+		DEBUG (DB_VM, "lpage_evict: evicting clean page 0x%x\n", (lp->lp_paddr & PAGE_FRAME));
+		spinlock_release(&stats_spinlock);
+	}
+
+	lp->lp_paddr = INVALID_PADDR; // Indicate that it is no longer in memory
+	lpage_unlock(lp);
+
+	
 }
