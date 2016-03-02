@@ -362,8 +362,20 @@ static
 uint32_t 
 page_replace(void)
 {
-    // Complete this function.
-	return 0;
+    KASSERT(spinlock_do_i_hold(%coremap_spinlock));
+
+    int evict = random() % num_coremap_entries;
+    while (coremap[evict].cm_kernel == 1 || coremap[evict].cm_pinned == 1)
+   	{
+   		evict = random() % num_coremap_entries;
+   	}
+
+   	DEBUG(DB_VM, "rand_page_replace evicting %d cm max %d", evict, num_coremap_entries);
+
+   	KASSERT(coremap[evict].cm_kernel == 0);
+   	KASSERT(coremap[evict].cm_pinned == 0);
+
+   	return evict;
 }
 
 #else /* not OPT_RANDPAGE */
