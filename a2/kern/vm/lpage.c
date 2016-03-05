@@ -446,6 +446,18 @@ lpage_fault(struct lpage *lp, struct addrspace *as, int faulttype, vaddr_t va)
 		lpage_lock(lp);
 		lock_release(global_paging_lock);
 		lp->lp_paddr = paddr;
+
+		//update the stats for major faults
+		spinlock_acquire(&stats_spinlock);
+		ct_majfaults++;
+		spinlock_release(&stats_spinlock);
+	}
+
+	//update the stats for minor faults
+	else {
+		spinlock_acquire(&stats_spinlock);
+		ct_minfaults++;
+		spinlock_release(&stats_spinlock);
 	}
 
 	//if the page is writeable set it to dirty
