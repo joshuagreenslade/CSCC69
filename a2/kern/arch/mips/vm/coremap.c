@@ -362,7 +362,7 @@ static
 uint32_t 
 page_replace(void)
 {
-    KASSERT(spinlock_do_i_hold(%coremap_spinlock));
+    KASSERT(spinlock_do_i_hold(&coremap_spinlock));
 
     int evict = random() % num_coremap_entries;
     while (coremap[evict].cm_kernel == 1 || coremap[evict].cm_pinned == 1)
