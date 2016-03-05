@@ -114,6 +114,7 @@ static uint32_t num_coremap_kernel;	/* pages allocated to the kernel */
 static uint32_t num_coremap_user;	/* pages allocated to user progs */
 static uint32_t num_coremap_free;	/* pages not allocated at all */
 static uint32_t base_coremap_page;
+static uint32_t last = 0;		//last evicted page
 static struct coremap_entry *coremap;
 
 static volatile uint32_t ct_shootdowns_sent;
@@ -391,8 +392,17 @@ static
 uint32_t
 page_replace(void)
 {
-	// Complete this function.
-	return 0;
+	//find the next page avaliable to be replaced starting at last+1 and
+	//only stopping when one is found
+	for(uint32_t i = last + 1; ; i++) {
+		i = i % num_coremap_entries;
+
+		//if its not a kernel or pinned page
+		if((coremap[i].cm_kernel == 0) && (coremap[i].cm_pinned == 0)) {
+			last = i;
+			return i;
+		}
+	}
 }
 
 #endif /* OPT_RANDPAGE */
