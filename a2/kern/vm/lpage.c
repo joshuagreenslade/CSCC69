@@ -422,24 +422,38 @@ lpage_zerofill(struct lpage **lpret)
 int
 lpage_fault(struct lpage *lp, struct addrspace *as, int faulttype, vaddr_t va)
 {
+	paddr_t paddr;
+
 	lpage_lock_and_pin(lp);
+	paddr = lp->lp_paddr & PAGE_FRAME;
 
 	//if the page is not in the memory its in the swapspace
-	if(lp->lp_paddr == INVALID_PADDR) {
+	if(paddr == INVALID_PADDR) {
 		lpage_unlock(lp);
 
 		//allocate space in ram
-		lp->lp_paddr = coremap_allocuser(lp);
+		paddr = coremap_allocuser(lp);
+
+		//allocate failed, not enough memory
+		if(paddr == INVALID_PADDR) {
+			coremap_unpin(paddr & PAGE_FRAME);
+			return ENOMEM;
+		}
 
 		//load the page into ram
 		lock_acquire(global_paging_lock);
-		swap_pagein(lp->lp_paddr, lp->lp_swapaddr);
+		swap_pagein(paddr, lp->lp_swapaddr);
 		lpage_lock(lp);
 		lock_release(global_paging_lock);
+		lp->lp_paddr = paddr;
 	}
 
+	//if the page is writeable set it to dirty
+	if(faulttype)
+		LP_SET(lp, LPF_DIRTY);
+
 	//update the tlb
-	mmu_map(as, va, lp->lp_paddr, faulttype);
+	mmu_map(as, va, paddr, faulttype);
 	lpage_unlock(lp);
 
 	return 0;
