@@ -1,0 +1,245 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/teaching/course-36913s/!svn/ver/162/assignments/a3/a3-starter/src/kern/include
+END
+clock.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/clock.h
+END
+uio.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/uio.h
+END
+endian.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/endian.h
+END
+mainbus.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/mainbus.h
+END
+limits.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/limits.h
+END
+threadlist.h
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/threadlist.h
+END
+types.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/types.h
+END
+elf.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/elf.h
+END
+syscall.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/teaching/course-36913s/!svn/ver/96/assignments/a3/a3-starter/src/kern/include/syscall.h
+END
+stat.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/stat.h
+END
+vmprivate.h
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/vmprivate.h
+END
+array.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/array.h
+END
+emufs.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/emufs.h
+END
+spinlock.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/spinlock.h
+END
+cdefs.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/cdefs.h
+END
+thread.h.safe
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/thread.h.safe
+END
+addrspace.h
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/teaching/course-36913s/!svn/ver/96/assignments/a3/a3-starter/src/kern/include/addrspace.h
+END
+cpu.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/cpu.h
+END
+copyinout.h
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/copyinout.h
+END
+sfs.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/sfs.h
+END
+spl.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/spl.h
+END
+vfs.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/vfs.h
+END
+device.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/device.h
+END
+wchan.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/wchan.h
+END
+setjmp.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/setjmp.h
+END
+threadprivate.h
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/threadprivate.h
+END
+lib.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/lib.h
+END
+thread.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/teaching/course-36913s/!svn/ver/96/assignments/a3/a3-starter/src/kern/include/thread.h
+END
+fs.h
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/fs.h
+END
+vnode.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/vnode.h
+END
+pid.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/teaching/course-36913s/!svn/ver/162/assignments/a3/a3-starter/src/kern/include/pid.h
+END
+bitmap.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/bitmap.h
+END
+signal.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/signal.h
+END
+test.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/162/assignments/a3/a3-starter/src/kern/include/test.h
+END
+file.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/teaching/course-36913s/!svn/ver/96/assignments/a3/a3-starter/src/kern/include/file.h
+END
+vm.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/teaching/course-36913s/!svn/ver/96/assignments/a3/a3-starter/src/kern/include/vm.h
+END
+current.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/current.h
+END
+stdarg.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/stdarg.h
+END
+synch.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/synch.h
+END
+version.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/include/version.h
+END

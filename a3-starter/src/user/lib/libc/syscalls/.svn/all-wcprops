@@ -1,0 +1,11 @@
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/user/lib/libc/syscalls
+END
+gensyscalls.sh
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/user/lib/libc/syscalls/gensyscalls.sh
+END

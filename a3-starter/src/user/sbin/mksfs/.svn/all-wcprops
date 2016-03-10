@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/sbin/mksfs
+END
+disk.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/sbin/mksfs/disk.h
+END
+support.h
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/sbin/mksfs/support.h
+END
+mksfs.c
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/sbin/mksfs/mksfs.c
+END
+disk.c
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/sbin/mksfs/disk.c
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/sbin/mksfs/Makefile
+END
+support.c
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/sbin/mksfs/support.c
+END

@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/arch/sys161/include
+END
+bus.h
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/arch/sys161/include/bus.h
+END
+maxcpus.h
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/arch/sys161/include/maxcpus.h
+END

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/teaching/course-36913s/!svn/ver/162/assignments/a3/a3-starter/src
+END
+configure
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/teaching/course-36913s/!svn/ver/162/assignments/a3/a3-starter/src/configure
+END
+CHANGES
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/teaching/course-36913s/!svn/ver/162/assignments/a3/a3-starter/src/CHANGES
+END
+sys161.conf
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/sys161.conf
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/Makefile
+END

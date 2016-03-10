@@ -1,0 +1,101 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/bin/psh
+END
+psh.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/bin/psh/psh.h
+END
+opentest.c
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/bin/psh/opentest.c
+END
+cp.c
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/bin/psh/cp.c
+END
+mkdir.c
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/bin/psh/mkdir.c
+END
+cat.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/bin/psh/cat.c
+END
+ln.c
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/bin/psh/ln.c
+END
+sync.c
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/bin/psh/sync.c
+END
+rmdir.c
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/bin/psh/rmdir.c
+END
+rm.c
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/bin/psh/rm.c
+END
+ls.c
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/bin/psh/ls.c
+END
+mv.c
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/bin/psh/mv.c
+END
+depend.mk
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/bin/psh/depend.mk
+END
+pwd.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/bin/psh/pwd.c
+END
+psh.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/bin/psh/psh.c
+END
+dependh.mk
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/bin/psh/dependh.mk
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/teaching/course-36913s/!svn/ver/98/assignments/a3/a3-starter/src/user/bin/psh/Makefile
+END

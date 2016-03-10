@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/fs/sfs
+END
+sfs_vnops.c
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/fs/sfs/sfs_vnops.c
+END
+sfs_io.c
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/fs/sfs/sfs_io.c
+END
+sfs_fsops.c
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/fs/sfs/sfs_fsops.c
+END

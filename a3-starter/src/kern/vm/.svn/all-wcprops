@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/vm
+END
+kmalloc.c
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/vm/kmalloc.c
+END
+addrspace.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/vm/addrspace.c
+END
+lpage.c
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/vm/lpage.c
+END
+copyinout.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/vm/copyinout.c
+END
+swap.c
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/vm/swap.c
+END
+vmobj.c
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/vm/vmobj.c
+END

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/99/assignments/a3/a3-starter/src/user/lib/libc/string
+END
+memcmp.c
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/teaching/course-36913s/!svn/ver/99/assignments/a3/a3-starter/src/user/lib/libc/string/memcmp.c
+END
+strerror.c
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/teaching/course-36913s/!svn/ver/99/assignments/a3/a3-starter/src/user/lib/libc/string/strerror.c
+END
+strtok.c
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/teaching/course-36913s/!svn/ver/99/assignments/a3/a3-starter/src/user/lib/libc/string/strtok.c
+END
+memset.c
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/teaching/course-36913s/!svn/ver/99/assignments/a3/a3-starter/src/user/lib/libc/string/memset.c
+END
