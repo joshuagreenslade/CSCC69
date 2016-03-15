@@ -1,0 +1,26 @@
+cd a3-starter/src
+./configure --ostree=`pwd`/../../root
+
+cd kern/conf
+
+./config ASST3
+cd ../compile/ASST3
+
+bmake depend
+bmake &> ../../../../../error
+
+bmake install
+
+cd ../../..
+bmake
+bmake install
+
+cd ../..
+
+cat ./error
+
+cp a3-starter/src/sys161.conf root
+
+cd root
+./hostbin/host-mksfs DISK1.img FS
+sys161 kernel mount sfs lhd0
