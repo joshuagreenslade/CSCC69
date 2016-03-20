@@ -10,6 +10,7 @@
 #include <kern/limits.h>
 
 struct vnode;
+struct lock;
 
 /*
  * filetable struct
@@ -18,7 +19,17 @@ struct vnode;
  * array of ints is just intended to make the compiler happy.
  */
 struct filetable {
-	int changeme[__OPEN_MAX]; /* dummy type */
+	struct openfiles *file[__OPEN_MAX];
+};
+
+struct openfiles {
+	char *filename;
+	int flag;		//the w/r flag
+	off_t offset;		//the file offset
+	int links;		//keep track of the number of links to the file
+
+	struct lock *file_lock;	//to lock the file info
+	struct vnode *vn;	//the files vnode
 };
 
 /* these all have an implicit arg of the curthread's filetable */
@@ -35,6 +46,16 @@ int file_close(int fd);
  * the filetable to help implement some of the filetable-related
  * system calls.
  */
+
+/* inserts a file into the filetable */
+int insert_file(struct openfiles *file, int *retfd);
+
+/* checks that the fd is valid and is in the filetable */
+struct openfiles* check_fd(int fd);
+
+/* duplicates the current threads filetable */
+int duplicate_filetable(struct filetable **duplicate);
+
 
 #endif /* _FILE_H_ */
 

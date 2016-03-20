@@ -11,6 +11,14 @@
 #include <kern/unistd.h>
 #include <file.h>
 #include <syscall.h>
+#include <vfs.h>
+#include <lib.h>
+#include <synch.h>
+#include <thread.h>
+#include <current.h>
+#include <vnode.h>
+#include <uio.h>
+#include <kern/fcntl.h>
 
 /*** openfile functions ***/
 
@@ -26,13 +34,45 @@
 int
 file_open(char *filename, int flags, int mode, int *retfd)
 {
-	(void)filename;
-	(void)flags;
-	(void)retfd;
-	(void)mode;
+	int error;
+	struct vnode *vn;
+	struct openfiles *file;
 
+	//open the file
+	error = vfs_open(filename, flags, mode, &vn);
+	if(error)
+		return error;
 
-	return EUNIMP;
+	//allocate space for the file info
+	file = kmalloc(sizeof(struct openfiles));
+	if(file == NULL) {
+		vfs_close(vn);
+		return ENOMEM;
+	}
+
+	//initalize the file table entry
+	file->filename = filename;
+	file->flag = flags;
+	file->offset = 0;
+	file->links = 1;
+	file->vn = vn;
+
+	file->file_lock = lock_create("file_lock");
+	if(file->file_lock == NULL) {
+		vfs_close(vn);
+		kfree(file);
+		return ENOMEM;
+	}
+
+	//put the file into the lowest fd in the filetable
+	error = insert_file(file, retfd);
+	if(error) {
+		vfs_close(vn);
+		lock_destroy(file->file_lock);
+		kfree(file);
+		return error;
+	}
+	return 0;
 }
 
 
@@ -45,9 +85,30 @@ file_open(char *filename, int flags, int mode, int *retfd)
 int
 file_close(int fd)
 {
-        (void)fd;
+	struct openfiles *file;
 
-	return EUNIMP;
+	//check that the fd is valid
+	file = check_fd(fd);
+	if(file == NULL)
+		return EBADF;
+
+	lock_acquire(file->file_lock);
+
+        //decrease the files link
+	file->links--;
+
+	//if the link is zero so close the file
+	if(file->links < 0) {
+		vfs_close(file->vn);
+		lock_release(file->file_lock);
+		lock_destroy(file->file_lock);
+		kfree(file);
+	}
+	else
+		lock_release(file->file_lock);
+
+	curthread->t_filetable->file[fd] = NULL;
+	return 0;
 }
 
 /*** filetable functions ***/
@@ -70,8 +131,41 @@ file_close(int fd)
 int
 filetable_init(void)
 {
+	int error;
+	char *string;
+
+	//allocate space for filetable
+	curthread->t_filetable = kmalloc(sizeof(struct filetable));
+	if(curthread->t_filetable == NULL)
+		return ENOMEM;
+
+	//initalize the table
+	for(int i=0; i < __OPEN_MAX; i++)
+		curthread->t_filetable->file[i] = NULL;
+
+	//set stdin, stdout, stderr
+	for(int i=0; i < 3; i++) {
+		if(i == STDIN_FILENO) {
+			strcpy(string, "stdin");
+			error = file_open(string, O_RDONLY, 0, &i);
+			if(error)
+				return error;
+		}
+		else if(i == STDOUT_FILENO) {
+			strcpy(string, "stdout");
+			error = file_open(string, O_WRONLY, 0, &i);
+			if(error)
+				return error;
+		}
+		else if(i == STDERR_FILENO) {
+			strcpy(string, "stderr");
+			error = file_open(string, O_WRONLY, 0, &i);
+			if(error)
+				return error;
+		}
+	}
 	return 0;
-}	
+}
 
 /*
  * filetable_destroy
@@ -82,8 +176,15 @@ filetable_init(void)
 void
 filetable_destroy(struct filetable *ft)
 {
-        (void)ft;
-}	
+        //call close on all tables that arn't null
+	for(int i=0; i < __OPEN_MAX; i++) {
+		if(curthread->t_filetable->file[i] != NULL)
+			file_close(i);
+	}
+
+	//free the table
+	kfree(ft);
+}
 
 
 /* 
@@ -94,5 +195,69 @@ filetable_destroy(struct filetable *ft)
  * the current file position) associated with that open file.
  */
 
+/*
+ * Inserts the given openfile into the filetable and returns the fd that it was
+ * inserted into. Returns EMFILE if the file table was full.
+ */
+int
+insert_file(struct openfiles *file, int *retfd)
+{
+	//look for the first avaliable fd in the filetable
+	for(int i=0; i < __OPEN_MAX; i++) {
+		if(curthread->t_filetable->file[i] == NULL) {
+			curthread->t_filetable->file[i] = file;
+			*retfd = i;
+			return 0;
+		}
+	}
+	return EMFILE;
+}
+
+
+/*
+ * Checks if the fd is valid and is in the filetable. Return the openfile if it
+ * is, null otherwise.
+ */
+struct
+openfiles*
+check_fd(int fd)
+{
+	if(fd < 0 || fd > __OPEN_MAX)
+		return NULL;
+
+	return curthread->t_filetable->file[fd];
+}
+
+
+/*
+ * Duplicates the current threads filetable and puts it into duplicate.
+ */
+int
+duplicate_filetable(struct filetable **duplicate)
+{
+	if(curthread->t_filetable == NULL) {
+		*duplicate = NULL;
+		return 0;
+	}
+
+	//allocate space for the filetable
+	*duplicate = kmalloc(sizeof(struct filetable));
+	if(duplicate == NULL)
+		return ENOMEM;
+
+	//copy all entries to the duplicate table and increase all the link counts
+	//by 1
+	for(int i=0; i < __OPEN_MAX; i++) {
+		if(curthread->t_filetable->file[i] == NULL)
+			(*duplicate)->file[i] = NULL;
+		else {
+			lock_acquire(curthread->t_filetable->file[i]->file_lock);
+			curthread->t_filetable->file[i]->links++;
+			lock_release(curthread->t_filetable->file[i]->file_lock);
+			(*duplicate)->file[i] = curthread->t_filetable->file[i];
+		}
+	}
+	return 0;
+}
 
 /* END A3 SETUP */
