@@ -86,9 +86,14 @@ int
 file_close(int fd)
 {
 	struct openfiles *file;
+	int error;
 
 	//check that the fd is valid
-	file = check_fd(fd);
+	error = check_fd(fd);
+	if(error)
+		return error;
+
+	file = curthread->t_filetable->file[fd];
 	if(file == NULL)
 		return EBADF;
 
@@ -218,14 +223,13 @@ insert_file(struct openfiles *file, int *retfd)
  * Checks if the fd is valid and is in the filetable. Return the openfile if it
  * is, null otherwise.
  */
-struct
-openfiles*
+int
 check_fd(int fd)
 {
 	if(fd < 0 || fd > __OPEN_MAX)
-		return NULL;
+		return EBADF;
 
-	return curthread->t_filetable->file[fd];
+	return 0;
 }
 
 

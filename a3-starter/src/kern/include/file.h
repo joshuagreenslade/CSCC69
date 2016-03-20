@@ -50,8 +50,8 @@ int file_close(int fd);
 /* inserts a file into the filetable */
 int insert_file(struct openfiles *file, int *retfd);
 
-/* checks that the fd is valid and is in the filetable */
-struct openfiles* check_fd(int fd);
+/* checks that the fd is valid */
+int check_fd(int fd);
 
 /* duplicates the current threads filetable */
 int duplicate_filetable(struct filetable **duplicate);
