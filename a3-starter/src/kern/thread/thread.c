@@ -595,6 +595,14 @@ thread_fork(const char *name,
 		*ret = newthread->t_pid;
 	}
 
+
+	//duplicate the filetable for the new thread
+	if(duplicate_filetable(&newthread->t_filetable)) {
+		pid_unalloc(newthread->t_pid);
+		thread_destroy(newthread);
+		return ENOMEM;
+	}
+
 	return 0;
 }
 
