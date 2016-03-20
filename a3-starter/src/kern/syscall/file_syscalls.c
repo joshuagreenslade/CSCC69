@@ -122,11 +122,45 @@ sys_close(int fd)
 int
 sys_dup2(int oldfd, int newfd, int *retval)
 {
-        (void)oldfd;
-        (void)newfd;
-        (void)retval;
+	int error;
+	struct openfiles *oldfile;
 
-	return EUNIMP;
+	//check that both fds ae valid, and that oldfd isn't null
+	error = check_fd(oldfd);
+	if(error)
+		return error;
+
+	error = check_fd(newfd);
+	if(error)
+		return error;
+
+	oldfile = curthread->t_filetable->file[oldfd];
+	if(oldfile == NULL)
+		return EBADF;
+
+	//if both fd's are the same, do nothing
+	if(oldfd == newfd) {
+		*retval = newfd;
+		return 0;
+	}
+
+	//if the newfd has a file in it close it
+	if(curthread->t_filetable->file[newfd] != NULL)
+		error = file_close(newfd);
+		if(error)
+			return error;
+
+	//increase the oldfile's links count
+	lock_acquire(oldfile->file_lock);
+	oldfile->links++;
+	lock_release(oldfile->file_lock);
+
+	//link file[newfd] to oldfile
+	curthread->t_filetable->file[newfd] = oldfile;
+
+	*retval = newfd;
+
+	return 0;
 }
 
 /*
