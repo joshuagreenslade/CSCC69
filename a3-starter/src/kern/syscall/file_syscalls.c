@@ -296,55 +296,183 @@ sys_lseek(int fd, off_t offset, int whence, off_t *retval)
 /* really not "file" calls, per se, but might as well put it here */
 
 /*
+ * Given a path, change the curthread current working directory to the working directory
+ * of the given path.
+ * return 0 if succeeded, -1 if not
  * sys_chdir
  * 
  */
 int
 sys_chdir(userptr_t path)
 {
-        (void)path;
+        int result;
+        struct vnode *dir;
+        char *path_name;
 
-	return EUNIMP;
+        if ((path_name) = (char *)kmalloc(__PATH_MAX)) == NULL)
+		{
+			return ENOMEM;
+		}
+		result = copyinstr(path, path_name, __PATH_MAX, NULL);
+
+		if (result)
+		{
+			kfree(path_name);
+			return result;
+		}
+
+		// if path is too long
+		if (sizeof(path_name) > __PATH_MAX)		
+		{
+			return ENAMETOOLONG;
+		}
+
+		// find inode to wanted directory
+		result = vfs_lookup(path_name, %dir);
+		if (result)
+		{
+			return result;
+		}
+		// set to current directory
+		result = vfs_setcurdir(dir);
+		return result
+
 }
 
 /*
+ * Get the pathname of the current working directory
  * sys___getcwd
  * 
  */
 int
 sys___getcwd(userptr_t buf, size_t buflen, int *retval)
 {
-        (void)buf;
-        (void)buflen;
-        (void)retval;
+        struct uio user_uio;
+        struct iovec user_uio;
+        int result;
 
-	return EUNIMP;
+        // if the size is empty
+        if (buflen == 0)
+        {
+        	return EINVAL;
+        }
+
+        mk_useruio(&user_iov, &user_uio, buf, buflen, 0, UIO_READ);
+        result = vfs_getcwd(%user_uio);
+        if (result)
+        {
+        	// we are returning -1 on error
+        	*retval = -1;
+        	return result;
+        }
+
+        // save the # of bytes read in return value
+        *retval = buflen - user_uio.uio_resid;
+        return 0;
 }
 
 /*
+ * Get information about an open file associated with
+ * the file descriptor file descriptors, and write it
+ * to the area pointed to by the buffer.
  * sys_fstat
  */
 int
 sys_fstat(int fd, userptr_t statptr)
 {
-        (void)fd;
-        (void)statptr;
+		// If it is a bad file descriptor
+        if ( fd < 0 || fd >= __OPEN_MAX )
+        {
+        	return EBADF;
+        }
+        if ( curthread->t_filetable[fd] == NULL )
+        {
+        	return EBADF;
+        }
 
-	return EUNIMP;
+        // If it is a bad address
+        if ( statptr == NULL || curthread->t_filetable[fd]->vnodes == NULL )
+        {
+        	return EFAULT;
+        }
+
+        struct vnode *file_vnode;
+        struct stat stats;
+        struct uio 	user_uio;
+        struct iovec user_iov;
+        int result;
+
+        file_vnode = curthread->t_filetable[fd]->vnodes;
+
+        // If file does not exist
+        if ( !file_vnode )
+        {
+        	return EBADF;
+        }
+
+        result = VOP_STAT(file_vnode, &stats);
+        if (result)
+        {
+        	return result;
+        }
+
+        //Point statptr to stats
+        mk_useruio(&user_iov, &user_uio, statptr, sizeof(stats), 0, UIO_READ);
+        result = uiomove(&stats, sizeof(stats), &user_uio);
+        return result;
 }
 
 /*
+ * Read filename from directory
  * sys_getdirentry
  */
 int
 sys_getdirentry(int fd, userptr_t buf, size_t buflen, int *retval)
 {
-        (void)fd;
-        (void)buf;
-	(void)buflen;
-        (void)retval;
+        // If it is a bad file descriptor
+        if ( fd < 0 || fd >= __OPEN_MAX )
+        {
+        	return EBADF;
+        }
+        if ( curthread->t_filetable[fd] == NULL )
+        {
+        	return EBADF;
+        }
+        // If it is a bad address
+        if ( buf == NULL || curthread->t_filetable[fd]->vnodes == NULL )
+        {
+        	return EFAULT;
+        }
+        struct uio user_uio;
+        struct iovec user_iov;
+        struct vnode *file_vnode;
+        int result;
 
-	return EUNIMP;
+        file_vnode = curthread->t_filetable[fd]->vnodes;
+
+        // If file does not exist
+        if (!file_vnode)
+        {
+        	*retval = -1;
+        	return EBADF;
+        }
+
+        mk_useruio(&user_iov, &user_uio, buf, buflen, curthread->t_filetable[fd]->offsets, UIO_READ);
+        result = VOP_GETDIRENTRY(file_vnode, &user_uio);
+
+        // if VOP_GETDIRENTRY fails
+        if ( result )
+        {
+        	*retval = -1;
+        	return retval;
+        }
+
+        // return the size of file name 
+        *retval = buflen - user_uio.uio_resid;
+
+        // better take this out into a function
+        curthread->t_filetable[fd]->offsets = user_uio.uio_offset;
+        return 0;
 }
 
 /* END A3 SETUP */
