@@ -298,7 +298,7 @@ sys_lseek(int fd, off_t offset, int whence, off_t *retval)
 /*
  * Given a path, change the curthread current working directory to the working directory
  * of the given path.
- * return 0 if succeeded, -1 if not
+ * return 0 if succeeded, -1 if not 0
  * sys_chdir
  * 
  */
@@ -309,7 +309,7 @@ sys_chdir(userptr_t path)
         struct vnode *dir;
         char *path_name;
 
-        if ((path_name) = (char *)kmalloc(__PATH_MAX)) == NULL)
+        if ((path_name = (char *)kmalloc(__PATH_MAX)) == NULL)
 		{
 			return ENOMEM;
 		}
@@ -328,14 +328,14 @@ sys_chdir(userptr_t path)
 		}
 
 		// find inode to wanted directory
-		result = vfs_lookup(path_name, %dir);
+		result = vfs_lookup(path_name, &dir);
 		if (result)
 		{
 			return result;
 		}
 		// set to current directory
 		result = vfs_setcurdir(dir);
-		return result
+		return result;
 
 }
 
@@ -348,7 +348,7 @@ int
 sys___getcwd(userptr_t buf, size_t buflen, int *retval)
 {
         struct uio user_uio;
-        struct iovec user_uio;
+        struct iovec user_iov;
         int result;
 
         // if the size is empty
@@ -358,7 +358,7 @@ sys___getcwd(userptr_t buf, size_t buflen, int *retval)
         }
 
         mk_useruio(&user_iov, &user_uio, buf, buflen, 0, UIO_READ);
-        result = vfs_getcwd(%user_uio);
+        result = vfs_getcwd(&user_uio);
         if (result)
         {
         	// we are returning -1 on error
@@ -385,13 +385,14 @@ sys_fstat(int fd, userptr_t statptr)
         {
         	return EBADF;
         }
-        if ( curthread->t_filetable[fd] == NULL )
+        struct openfiles *file = curthread->t_filetable->file[fd];
+        if (file == NULL)
         {
         	return EBADF;
         }
 
         // If it is a bad address
-        if ( statptr == NULL || curthread->t_filetable[fd]->vnodes == NULL )
+        if ( statptr == NULL || curthread->t_filetable->file[fd]->vn == NULL )
         {
         	return EFAULT;
         }
@@ -402,7 +403,7 @@ sys_fstat(int fd, userptr_t statptr)
         struct iovec user_iov;
         int result;
 
-        file_vnode = curthread->t_filetable[fd]->vnodes;
+        file_vnode = curthread->t_filetable->file[fd]->vn;
 
         // If file does not exist
         if ( !file_vnode )
@@ -434,12 +435,12 @@ sys_getdirentry(int fd, userptr_t buf, size_t buflen, int *retval)
         {
         	return EBADF;
         }
-        if ( curthread->t_filetable[fd] == NULL )
+        if ( curthread->t_filetable->file[fd] == NULL )
         {
         	return EBADF;
         }
         // If it is a bad address
-        if ( buf == NULL || curthread->t_filetable[fd]->vnodes == NULL )
+        if ( buf == NULL || curthread->t_filetable->file[fd]->vn == NULL )
         {
         	return EFAULT;
         }
@@ -448,7 +449,7 @@ sys_getdirentry(int fd, userptr_t buf, size_t buflen, int *retval)
         struct vnode *file_vnode;
         int result;
 
-        file_vnode = curthread->t_filetable[fd]->vnodes;
+        file_vnode = curthread->t_filetable->file[fd]->vn;
 
         // If file does not exist
         if (!file_vnode)
@@ -457,21 +458,20 @@ sys_getdirentry(int fd, userptr_t buf, size_t buflen, int *retval)
         	return EBADF;
         }
 
-        mk_useruio(&user_iov, &user_uio, buf, buflen, curthread->t_filetable[fd]->offsets, UIO_READ);
+        mk_useruio(&user_iov, &user_uio, buf, buflen, curthread->t_filetable->file[fd]->offset, UIO_READ);
         result = VOP_GETDIRENTRY(file_vnode, &user_uio);
 
         // if VOP_GETDIRENTRY fails
         if ( result )
         {
-        	*retval = -1;
-        	return retval;
+        	return EBADF;
         }
 
         // return the size of file name 
         *retval = buflen - user_uio.uio_resid;
 
         // better take this out into a function
-        curthread->t_filetable[fd]->offsets = user_uio.uio_offset;
+        curthread->t_filetable->file[fd]->offset = user_uio.uio_offset;
         return 0;
 }
 
