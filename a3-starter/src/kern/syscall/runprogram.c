@@ -44,6 +44,7 @@
 #include <vfs.h>
 #include <syscall.h>
 #include <test.h>
+#include <file.h>
 
 /*
  * Load program "progname" and start running it in usermode.
@@ -57,6 +58,7 @@ runprogram(char *progname)
 	struct vnode *v;
 	vaddr_t entrypoint, stackptr;
 	int result;
+	int error;
 
 	/* Open the file. */
 	result = vfs_open(progname, O_RDONLY, 0, &v);
@@ -93,6 +95,14 @@ runprogram(char *progname)
 	if (result) {
 		/* thread_exit destroys curthread->t_addrspace */
 		return result;
+	}
+
+	//initalize the filetable if it is null
+	if(curthread->t_filetable == NULL) {
+kprintf("\n");
+		error = filetable_init();
+		if(error)
+			return error;
 	}
 
 	/* Warp to user mode. */
