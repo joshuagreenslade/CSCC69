@@ -499,7 +499,7 @@ sys_getdirentry(int fd, userptr_t buf, size_t buflen, int *retval)
         // if VOP_GETDIRENTRY fails
         if ( result )
         {
-        	return EBADF;
+        	return result;
         }
 
         // return the size of file name 
