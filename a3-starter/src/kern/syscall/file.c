@@ -99,12 +99,13 @@ file_close(int fd)
 
 	lock_acquire(file->file_lock);
 
-        //decrease the files link
+    //decrease the files link
 	file->links--;
 
 	//if the link is zero so close the file
 	if(file->links < 0) {
-		vfs_close(file->vn);
+		if(file->vn != NULL)
+			vfs_close(file->vn);
 		lock_release(file->file_lock);
 		lock_destroy(file->file_lock);
 		kfree(file);
@@ -113,6 +114,7 @@ file_close(int fd)
 		lock_release(file->file_lock);
 
 	curthread->t_filetable->file[fd] = NULL;
+
 	return 0;
 }
 
@@ -151,19 +153,19 @@ filetable_init(void)
 	//set stdin, stdout, stderr
 	for(int i=0; i < 3; i++) {
 		if(i == STDIN_FILENO) {
-			strcpy(string, "stdin");
+			strcpy(string, "con:");
 			error = file_open(string, O_RDONLY, 0, &i);
 			if(error)
 				return error;
 		}
 		else if(i == STDOUT_FILENO) {
-			strcpy(string, "stdout");
+			strcpy(string, "con:");
 			error = file_open(string, O_WRONLY, 0, &i);
 			if(error)
 				return error;
 		}
 		else if(i == STDERR_FILENO) {
-			strcpy(string, "stderr");
+			strcpy(string, "con:");
 			error = file_open(string, O_WRONLY, 0, &i);
 			if(error)
 				return error;
@@ -226,7 +228,7 @@ insert_file(struct openfiles *file, int *retfd)
 int
 check_fd(int fd)
 {
-	if(fd < 0 || fd > __OPEN_MAX)
+	if(fd < 0 || fd >= __OPEN_MAX)
 		return EBADF;
 
 	return 0;

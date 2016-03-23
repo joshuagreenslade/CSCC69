@@ -22,40 +22,8 @@
 #include <copyinout.h>
 #include <synch.h>
 #include <file.h>
+#include <kern/seek.h>
 
-/* This special-case global variable for the console vnode should be deleted 
- * when you have a proper open file table implementation.
- */
-struct vnode *cons_vnode=NULL; 
-
-/* This function should be deleted, including the call in main.c, when you
- * have proper initialization of the first 3 file descriptors in your 
- * open file table implementation.
- * You may find it useful as an example of how to get a vnode for the 
- * console device.
- */
-void dumb_consoleIO_bootstrap()
-{
-  int result;
-  char path[5];
-
-  /* The path passed to vfs_open must be mutable.
-   * vfs_open may modify it.
-   */
-
-  strcpy(path, "con:");
-  result = vfs_open(path, O_RDWR, 0, &cons_vnode);
-
-  if (result) {
-    /* Tough one... if there's no console, there's not
-     * much point printing a warning...
-     * but maybe the bootstrap was just called in the wrong place
-     */
-    kprintf("Warning: could not initialize console vnode\n");
-    kprintf("User programs will not be able to read/write\n");
-    cons_vnode = NULL;
-  }
-}
 
 /*
  * mk_useruio
@@ -184,32 +152,45 @@ sys_dup2(int oldfd, int newfd, int *retval)
 int
 sys_read(int fd, userptr_t buf, size_t size, int *retval)
 {
+	struct openfiles *file;
 	struct uio user_uio;
 	struct iovec user_iov;
 	int result;
-	int offset = 0;
+	int error;
+	
+	if(buf == NULL)
+		return EFAULT;
 
-	/* Make sure we were able to init the cons_vnode */
-	if (cons_vnode == NULL) {
-	  return ENODEV;
-	}
+	//check if the fd is valid
+	error = check_fd(fd);
+	if (error)
+		return error;
 
-	/* better be a valid file descriptor */
-	/* Right now, only stdin (0), stdout (1) and stderr (2)
-	 * are supported, and they can't be redirected to a file
-	 */
-	if (fd < 0 || fd > 2) {
-	  return EBADF;
+	file = curthread->t_filetable->file[fd];
+	if(file == NULL)
+		return EBADF;
+
+	lock_acquire(file->file_lock);
+
+	//check that the file is open for reading
+	if(file->flag == O_WRONLY){
+		lock_release(file->file_lock);
+		return EBADF;
 	}
 
 	/* set up a uio with the buffer, its size, and the current offset */
-	mk_useruio(&user_iov, &user_uio, buf, size, offset, UIO_READ);
+	mk_useruio(&user_iov, &user_uio, buf, size, file->offset, UIO_READ);
 
 	/* does the read */
-	result = VOP_READ(cons_vnode, &user_uio);
+	result = VOP_READ(file->vn, &user_uio);
 	if (result) {
+		lock_release(file->file_lock);
 		return result;
 	}
+
+	//set the offset
+	file->offset = user_uio.uio_offset;
+	lock_release(file->file_lock);
 
 	/*
 	 * The amount read is the size of the buffer originally, minus
@@ -242,31 +223,45 @@ sys_read(int fd, userptr_t buf, size_t size, int *retval)
 int
 sys_write(int fd, userptr_t buf, size_t len, int *retval) 
 {
+	struct openfiles *file;
         struct uio user_uio;
         struct iovec user_iov;
         int result;
-        int offset = 0;
+	int error;
 
-        /* Make sure we were able to init the cons_vnode */
-        if (cons_vnode == NULL) {
-          return ENODEV;
-        }
+	if(buf == NULL)
+		return EFAULT;
 
-        /* Right now, only stdin (0), stdout (1) and stderr (2)
-         * are supported, and they can't be redirected to a file
-         */
-        if (fd < 0 || fd > 2) {
-          return EBADF;
-        }
+        //check if the fd is valid
+	error = check_fd(fd);
+        if(error)
+        	return error;
+
+	file = curthread->t_filetable->file[fd];
+	if(file == NULL)
+		return EBADF;
+
+	lock_acquire(file->file_lock);
+
+	//check that the file is open for writing
+	if(file->flag == O_RDONLY){
+		lock_release(file->file_lock);
+		return EBADF;
+	}
 
         /* set up a uio with the buffer, its size, and the current offset */
-        mk_useruio(&user_iov, &user_uio, buf, len, offset, UIO_WRITE);
+        mk_useruio(&user_iov, &user_uio, buf, len, file->offset, UIO_WRITE);
 
         /* does the write */
-        result = VOP_WRITE(cons_vnode, &user_uio);
+        result = VOP_WRITE(file->vn, &user_uio);
         if (result) {
+		lock_release(file->file_lock);
                 return result;
         }
+
+	//set the offset
+	file->offset = user_uio.uio_offset;
+	lock_release(file->file_lock);
 
         /*
          * the amount written is the size of the buffer originally,
@@ -284,12 +279,52 @@ sys_write(int fd, userptr_t buf, size_t len, int *retval)
 int
 sys_lseek(int fd, off_t offset, int whence, off_t *retval)
 {
-        (void)fd;
-        (void)offset;
-        (void)whence;
-        (void)retval;
+	int error;
+	struct stat info;
 
-	return EUNIMP;
+	//check that fd is valid
+	error = check_fd(fd);
+	if(error)
+		return error;
+
+	if(curthread->t_filetable->file[fd] == NULL)
+		return EBADF;
+
+	lock_acquire(curthread->t_filetable->file[fd]->file_lock);
+
+	//set the files offset
+	if(whence == SEEK_SET)
+		*retval = offset;
+	else if(whence == SEEK_CUR)
+		*retval = curthread->t_filetable->file[fd]->offset + offset;
+	else if(whence == SEEK_END) {
+		error = VOP_STAT(curthread->t_filetable->file[fd]->vn, &info);
+		if(error)
+			return error;
+
+		*retval = info.st_size + offset;
+	}
+	else {
+		lock_release(curthread->t_filetable->file[fd]->file_lock);
+		return EINVAL;
+	}
+
+	//check that the new offset isn't negative
+	if(*retval < 0){
+		lock_release(curthread->t_filetable->file[fd]->file_lock);
+		return EINVAL;
+	}
+
+	//check that fd is not a console device
+	error = VOP_TRYSEEK(curthread->t_filetable->file[fd]->vn, *retval);
+	if(error) {
+		lock_release(curthread->t_filetable->file[fd]->file_lock);
+		return ESPIPE;
+	}
+
+	curthread->t_filetable->file[fd]->offset = *retval;
+	lock_release(curthread->t_filetable->file[fd]->file_lock);
+	return 0;
 }
 
 
