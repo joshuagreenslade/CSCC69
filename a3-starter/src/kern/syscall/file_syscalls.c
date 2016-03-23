@@ -83,9 +83,9 @@ sys_close(int fd)
 	return file_close(fd);
 }
 
-/* 
+/*
  * sys_dup2
- * 
+ *
  */
 int
 sys_dup2(int oldfd, int newfd, int *retval)
@@ -157,7 +157,7 @@ sys_read(int fd, userptr_t buf, size_t size, int *retval)
 	struct iovec user_iov;
 	int result;
 	int error;
-	
+
 	if(buf == NULL)
 		return EFAULT;
 
@@ -206,8 +206,8 @@ sys_read(int fd, userptr_t buf, size_t size, int *retval)
  * calls VOP_WRITE.
  *
  * A3: This is the "dumb" implementation of sys_write:
- * it only deals with file descriptors 1 and 2, and 
- * assumes they are permanently associated with the 
+ * it only deals with file descriptors 1 and 2, and
+ * assumes they are permanently associated with the
  * console vnode (which must have been previously initialized).
  *
  * In your implementation, you should use the file descriptor
@@ -221,7 +221,7 @@ sys_read(int fd, userptr_t buf, size_t size, int *retval)
  */
 
 int
-sys_write(int fd, userptr_t buf, size_t len, int *retval) 
+sys_write(int fd, userptr_t buf, size_t len, int *retval)
 {
 	struct openfiles *file;
         struct uio user_uio;
@@ -274,7 +274,7 @@ sys_write(int fd, userptr_t buf, size_t len, int *retval)
 
 /*
  * sys_lseek
- * 
+ *
  */
 int
 sys_lseek(int fd, off_t offset, int whence, off_t *retval)
@@ -292,7 +292,7 @@ sys_lseek(int fd, off_t offset, int whence, off_t *retval)
 
 	lock_acquire(curthread->t_filetable->file[fd]->file_lock);
 
-	//set the files offset
+	//get the new offset value
 	if(whence == SEEK_SET)
 		*retval = offset;
 	else if(whence == SEEK_CUR)
