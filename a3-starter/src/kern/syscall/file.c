@@ -185,12 +185,13 @@ filetable_destroy(struct filetable *ft)
 {
         //call close on all tables that arn't null
 	for(int i=0; i < __OPEN_MAX; i++) {
-		if(curthread->t_filetable->file[i] != NULL)
+		if(ft->file[i] != NULL)
 			file_close(i);
 	}
 
 	//free the table
 	kfree(ft);
+	ft = NULL;
 }
 
 
