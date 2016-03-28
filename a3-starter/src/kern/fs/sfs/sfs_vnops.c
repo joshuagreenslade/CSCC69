@@ -1619,7 +1619,7 @@ static const struct vnode_ops sfs_dirops = {
 	
 	ISDIR,   /* read */
 	ISDIR,   /* readlink */
-	UNIMP,   /* getdirentry */
+	sfs_getdirentry,   /* getdirentry */
 	ISDIR,   /* write */
 	sfs_ioctl,
 	sfs_stat,
@@ -1777,4 +1777,65 @@ sfs_getroot(struct fs *fs)
 	vfs_biglock_release();
 
 	return &sv->sv_v;
+}
+
+int
+sfs_getdirentry(struct vnode *vnode, struct uio *uio)
+{
+	struct sfs_dir sd;
+	struct sfs_vnode *v;
+	int residue;
+	int offset;
+	int result;
+	int entries;
+
+	//Set offset and residue according to given uio
+	offset = uio->uio_offset;
+	residue = uio->uio_resid;
+
+	v = vnode->vn_data;
+	vfs_biglock_acquire();
+	entries = sfs_dir_nentries(v);
+
+	//Entries should not be less than offset of uio
+	//Return no such direntory entry
+	if (entries < offset)
+	{
+		vfs_biglock_release();
+		return ENOENT;
+	}
+
+	while(true)
+	{
+		result = sfs_readdir(v, &sd, uio->uio_offset);
+		if(result)
+		{
+			vfs_biglock_release();
+			return result;
+		}
+
+		//inode # for free directory entry 
+		if(sd.sfd_ino == SFS_NOINO)
+		{
+			offset++;
+			//Entries should not be less than offset of uio
+			//Return no such direntory entry
+			if(entries < offset)
+			{
+				vfs_biglock_release();
+				return ENOENT;
+			}
+			uio->uio_offset++;
+			continue;
+		}
+		if(!result)
+		{
+			break;
+		}
+	}
+
+	result = uiomove(sd.sfd_name, strlen(sd.sfd_name), uio);
+	uio->uio_offset = offset + 1;
+	vfs_biglock_release();
+	return 0;
 }
