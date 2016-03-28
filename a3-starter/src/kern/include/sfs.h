@@ -87,5 +87,8 @@ int sfs_wblock(struct sfs_fs *sfs, void *data, uint32_t block);
 /* Get root vnode */
 struct vnode *sfs_getroot(struct fs *fs);
 
+/* Get directory */
+int sfs_getdirentry(struct vnode *vnode, struct uio *uio);
+
 
 #endif /* _SFS_H_ */
