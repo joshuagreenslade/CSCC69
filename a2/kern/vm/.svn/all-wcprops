@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/vm
+END
+kmalloc.c
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/vm/kmalloc.c
+END
+addrspace.c
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/vm/addrspace.c
+END
+lpage.c
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/vm/lpage.c
+END
+copyinout.c
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/vm/copyinout.c
+END
+swap.c
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/vm/swap.c
+END
+vmobj.c
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/vm/vmobj.c
+END

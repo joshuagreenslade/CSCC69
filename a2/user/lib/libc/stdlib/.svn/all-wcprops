@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/cscc69w14/group5/a2/!svn/ver/1/user/lib/libc/stdlib
+END
+random.c
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/cscc69w14/group5/a2/!svn/ver/1/user/lib/libc/stdlib/random.c
+END
+system.c
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/cscc69w14/group5/a2/!svn/ver/1/user/lib/libc/stdlib/system.c
+END
+abort.c
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/cscc69w14/group5/a2/!svn/ver/1/user/lib/libc/stdlib/abort.c
+END
+malloc.c
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/cscc69w14/group5/a2/!svn/ver/1/user/lib/libc/stdlib/malloc.c
+END
+exit.c
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/cscc69w14/group5/a2/!svn/ver/1/user/lib/libc/stdlib/exit.c
+END

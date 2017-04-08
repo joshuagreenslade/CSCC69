@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/thread
+END
+spl.c
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/thread/spl.c
+END
+spinlock.c
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/thread/spinlock.c
+END
+threadlist.c
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/thread/threadlist.c
+END
+synch.c
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/thread/synch.c
+END
+thread.c
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/thread/thread.c
+END
+clock.c
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/thread/clock.c
+END
+pid.c
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/cscc69w14/group5/a2/!svn/ver/1/kern/thread/pid.c
+END
