@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/teaching/course-36913s/!svn/ver/95/assignments/a3/a3-starter/src/kern/conf
+END
+newvers.sh
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/conf/newvers.sh
+END
+conf.kern
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/teaching/course-36913s/!svn/ver/95/assignments/a3/a3-starter/src/kern/conf/conf.kern
+END
+config
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/conf/config
+END
+ASST1
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/conf/ASST1
+END
+ASST2-NORAND
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/teaching/course-36913s/!svn/ver/94/assignments/a3/a3-starter/src/kern/conf/ASST2-NORAND
+END
+ASST3
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/teaching/course-36913s/!svn/ver/94/assignments/a3/a3-starter/src/kern/conf/ASST3
+END
+ASST2-RAND
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/94/assignments/a3/a3-starter/src/kern/conf/ASST2-RAND
+END

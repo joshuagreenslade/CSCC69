@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/teaching/course-36913s/!svn/ver/162/assignments/a3/a3-starter/src/kern/test
+END
+arraytest.c
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/test/arraytest.c
+END
+synchtest.c
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/test/synchtest.c
+END
+waittest.c
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/teaching/course-36913s/!svn/ver/162/assignments/a3/a3-starter/src/kern/test/waittest.c
+END
+coremaptest.c
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/teaching/course-36913s/!svn/ver/162/assignments/a3/a3-starter/src/kern/test/coremaptest.c
+END
+nettest.c
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/test/nettest.c
+END
+malloctest.c
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/test/malloctest.c
+END
+threadtest.c
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/test/threadtest.c
+END
+fstest.c
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/teaching/course-36913s/!svn/ver/162/assignments/a3/a3-starter/src/kern/test/fstest.c
+END
+tt3.c
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/test/tt3.c
+END
+bitmaptest.c
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/kern/test/bitmaptest.c
+END

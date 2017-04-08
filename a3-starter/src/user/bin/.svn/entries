@@ -1,0 +1,104 @@
+10
+
+dir
+170
+https://drproject.cdf.toronto.edu/svn/teaching/course-36913s/assignments/a3/a3-starter/src/user/bin
+https://drproject.cdf.toronto.edu/svn/teaching/course-36913s
+
+
+
+2013-03-13T04:55:45.315116Z
+98
+demke
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+a995efeb-42ea-410e-8c62-157c625560da
+
+true
+dir
+
+mv
+dir
+
+pwd
+dir
+
+psh
+dir
+
+false
+dir
+
+cp
+dir
+
+mkdir
+dir
+
+cat
+dir
+
+ln
+dir
+
+sh
+dir
+
+sync
+dir
+
+Makefile
+file
+
+
+
+
+2013-05-06T16:06:16.002310Z
+5ec6173b8225f4c115c3f61bef05ffd5
+2013-03-13T04:55:45.315116Z
+98
+demke
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+221
+
+rmdir
+dir
+
+rm
+dir
+
+ls
+dir
+

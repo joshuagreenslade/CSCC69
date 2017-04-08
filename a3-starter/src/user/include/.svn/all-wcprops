@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/user/include
+END
+signal.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/user/include/signal.h
+END
+time.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/user/include/time.h
+END
+stdlib.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/user/include/stdlib.h
+END
+assert.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/user/include/assert.h
+END
+limits.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/user/include/limits.h
+END
+stdio.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/user/include/stdio.h
+END
+setjmp.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/user/include/setjmp.h
+END
+stdarg.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/user/include/stdarg.h
+END
+errno.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/user/include/errno.h
+END
+stdint.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/user/include/stdint.h
+END
+fcntl.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/user/include/fcntl.h
+END
+string.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/user/include/string.h
+END
+unistd.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/user/include/unistd.h
+END
+err.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/teaching/course-36913s/!svn/ver/1/assignments/a3/a3-starter/src/user/include/err.h
+END
